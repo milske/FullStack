@@ -1,5 +1,5 @@
 var PORT = process.env.PORT || 3000;
-var http = require("https");
+var http = require("http");
 
 // create server object
 http
@@ -12,3 +12,5 @@ http
     response.end(""); // end response
   })
   .listen(PORT); // the server object listens on port
+
+console.log("Server running at http://localhost:3000/");
