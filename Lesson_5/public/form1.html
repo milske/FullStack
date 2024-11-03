@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script>
+      window.onload = (event) => {
+        var sendButton = document.getElementById("myButton");
+
+        sendButton.addEventListener("click", function () {
+          var email = document.getElementById("email").value;
+          var pass = document.getElementById("pass").value;
+
+          console.log("Email: ", email);
+
+          // Create XMLHttpRequest object
+          var xmlhttp = new XMLHttpRequest();
+
+          // Set up the response handler
+          xmlhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+              var response = JSON.parse(this.responseText);
+
+              // Check for success or failure in response
+              if (response.success) {
+                // Redirect on success
+                window.location.href = "/studentpages";
+              } else {
+                // Display error message on failure
+                document.getElementById("status").innerHTML = response.message;
+              }
+            }
+          };
+
+          // Open and send AJAX request as POST
+          xmlhttp.open("POST", "/signin", true);
+          xmlhttp.setRequestHeader(
+            "Content-type",
+            "application/x-www-form-urlencoded"
+          );
+          xmlhttp.send(
+            "email=" +
+              encodeURIComponent(email) +
+              "&pass=" +
+              encodeURIComponent(pass)
+          );
+        });
+      };
+    </script>
+  </head>
+  <body>
+    <div>
+      <form>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Email address</label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            aria-describedby="emailHelp"
+            placeholder="Enter email"
+            name="email"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="exampleInputPassword1">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="pass"
+            placeholder="Password"
+            name="pass"
+          />
+        </div>
+        <button type="button" id="myButton" class="btn btn-primary">
+          Submit
+        </button>
+        <div id="status" class="form-group"></div>
+      </form>
+    </div>
+  </body>
+</html>
